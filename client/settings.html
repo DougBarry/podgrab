@@ -49,8 +49,11 @@ function insertText(elemID, text){
     <div class="columns two">
         <a href="/backups" class="button">Backups</a>
     </div>
-    <div class="columns two">
-        <a href="/opml" class="button">Export OPML</a>
+    <div class="columns three">
+        <a href="/opml" class="button" title="Export OPML file with original podcast urls">Export OPML (Original Urls)</a>
+    </div>
+        <div class="columns three">
+        <a href="/opml?usePodgrabLink=true" class="button" title="Export OPML file with Podgrab podcast feed urls">Export OPML (Podgrab Urls)</a>
     </div>
     <div class="columns two">
         <a title="Import this RSS feed in your favorite podcast player" target="_blank" href="/rss" class="button">RSS Feed</a>
@@ -169,7 +172,7 @@ function insertText(elemID, text){
         <table>
             <tr>
                 <td>Current Version</td>
-                <td>  2021.09.20</td>
+                <td>  2021.12.03</td>
             </tr>
             <tr>
                 <td>Website</td>
