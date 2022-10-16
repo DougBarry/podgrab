@@ -19,6 +19,8 @@ require (
 	gorm.io/gorm v1.24.0
 )
 
+require github.com/djimenez/iconv-go v0.0.0-20160305225143-8960e66bd3da // indirect
+
 require (
 	github.com/antchfx/xpath v1.2.1 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
@@ -33,6 +35,7 @@ require (
 	github.com/leodido/go-urn v1.2.1 // indirect
 	github.com/mattn/go-isatty v0.0.16 // indirect
 	github.com/mattn/go-sqlite3 v1.14.15 // indirect
+	github.com/mikkyang/id3-go v0.0.0-20191012064224-2c6ab3bb1fbd
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.5 // indirect
