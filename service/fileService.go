@@ -374,8 +374,8 @@ func createDataFolderIfNotExists(folder string) string {
 	return createFolder(folder, dataPath)
 }
 func createConfigFolderIfNotExists(folder string) string {
-	dataPath := os.Getenv("CONFIG")
-	return createFolder(folder, dataPath)
+	configPath := os.Getenv("CONFIG")
+	return createFolder(folder, configPath)
 }
 
 func deletePodcastFolder(folder string) error {
