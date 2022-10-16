@@ -4,7 +4,7 @@ import (
 	"time"
 )
 
-//Podcast is
+// Podcast is
 type Podcast struct {
 	Base
 	Title string
@@ -34,7 +34,7 @@ type Podcast struct {
 	IsPaused bool `gorm:"default:false"`
 }
 
-//PodcastItem is
+// PodcastItem is
 type PodcastItem struct {
 	Base
 	PodcastID string
@@ -87,8 +87,8 @@ type Setting struct {
 	GenerateNFOFile               bool `gorm:"default:false"`
 	DontDownloadDeletedFromDisk   bool `gorm:"default:false"`
 	BaseUrl                       string
-	MaxDownloadConcurrency        int `gorm:"default:5"`
-	UserAgent                     string
+	MaxDownloadConcurrency        int    `gorm:"default:5"`
+	UserAgent                     string `gorm:"default:podgrab"`
 }
 type Migration struct {
 	Base
