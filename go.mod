@@ -14,15 +14,14 @@ require (
 	github.com/joho/godotenv v1.4.0
 	github.com/satori/go.uuid v1.2.0
 	go.uber.org/zap v1.23.0
-	golang.org/x/net v0.0.0-20221014081412-f15817d10f9b
-	gorm.io/driver/sqlite v1.4.2
+	golang.org/x/net v0.0.0-20221017152216-f25eb7ecb193
+	gorm.io/driver/sqlite v1.4.3
 	gorm.io/gorm v1.24.0
 )
 
-require github.com/djimenez/iconv-go v0.0.0-20160305225143-8960e66bd3da // indirect
-
 require (
 	github.com/antchfx/xpath v1.2.1 // indirect
+	github.com/arkhipovkm/id3-go v0.0.0-20211112001453-d4d621bb257e
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/go-playground/locales v0.14.0 // indirect
 	github.com/go-playground/universal-translator v0.18.0 // indirect
@@ -35,7 +34,6 @@ require (
 	github.com/leodido/go-urn v1.2.1 // indirect
 	github.com/mattn/go-isatty v0.0.16 // indirect
 	github.com/mattn/go-sqlite3 v1.14.15 // indirect
-	github.com/mikkyang/id3-go v0.0.0-20191012064224-2c6ab3bb1fbd
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.5 // indirect
@@ -43,8 +41,8 @@ require (
 	go.uber.org/atomic v1.10.0 // indirect
 	go.uber.org/multierr v1.8.0 // indirect
 	golang.org/x/crypto v0.0.0-20221012134737-56aed061732a // indirect
-	golang.org/x/sys v0.0.0-20221013171732-95e765b1cc43 // indirect
-	golang.org/x/text v0.3.8 // indirect
+	golang.org/x/sys v0.1.0 // indirect
+	golang.org/x/text v0.4.0 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
