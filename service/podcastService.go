@@ -779,7 +779,7 @@ func makeQuery(url string) ([]byte, error) {
 	//link := "https://www.goodreads.com/search/index.xml?q=Good%27s+Omens&key=" + "jCmNlIXjz29GoB8wYsrd0w"
 	//link := "https://www.goodreads.com/search/index.xml?key=jCmNlIXjz29GoB8wYsrd0w&q=Ender%27s+Game"
 	fmt.Println(url)
-	req, err := http.NewRequest("GET", url, nil)
+	req, err := getRequest(url)
 	if err != nil {
 		return nil, err
 	}
