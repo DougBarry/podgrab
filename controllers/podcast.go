@@ -643,16 +643,16 @@ func UpdateSetting(c *gin.Context) {
 	if err == nil {
 
 		err = service.UpdateSettings(
-            model.DownloadOnAdd, 
-            model.InitialDownloadCount,
-			model.AutoDownload, 
+			model.DownloadOnAdd,
+			model.InitialDownloadCount,
+			model.AutoDownload,
 			model.FileNameFormat,
-			model.DarkMode, 
-            model.DownloadEpisodeImages, 
-            model.GenerateNFOFile, 
-            model.DontDownloadDeletedFromDisk, 
+			model.DarkMode,
+			model.DownloadEpisodeImages,
+			model.GenerateNFOFile,
+			model.DontDownloadDeletedFromDisk,
 			model.BaseUrl,
-			model.MaxDownloadConcurrency, 
+			model.MaxDownloadConcurrency,
 			model.UserAgent,
 		)
 		if err == nil {
