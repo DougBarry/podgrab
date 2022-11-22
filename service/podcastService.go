@@ -586,7 +586,7 @@ func DownloadMissingEpisodes() error {
 			SetPodcastItemAsDownloaded(item.ID, url)
 		}(item, *setting)
 
-		if index%5 == 0 {
+		if index%setting.MaxDownloadConcurrency == 0 {
 			wg.Wait()
 		}
 	}
@@ -830,7 +830,19 @@ func GetSearchFromPodcastIndex(pod *podcastindex.Podcast) *model.CommonSearchRes
 	return p
 }
 
-func UpdateSettings(downloadOnAdd bool, initialDownloadCount int, autoDownload bool, fileNameFormat string, darkMode bool, downloadEpisodeImages bool, generateNFOFile bool, dontDownloadDeletedFromDisk bool, baseUrl string) error {
+func UpdateSettings(
+	downloadOnAdd bool, 
+	initialDownloadCount int, 
+	autoDownload bool, 
+	fileNameFormat string, 
+	darkMode bool, 
+	downloadEpisodeImages bool, 
+	generateNFOFile bool, 
+	dontDownloadDeletedFromDisk bool, 
+	baseUrl string,
+	maxDownloadConcurrency int, 
+	userAgent string
+) error {
 	setting := db.GetOrCreateSetting()
 
 	setting.AutoDownload = autoDownload
@@ -842,6 +854,8 @@ func UpdateSettings(downloadOnAdd bool, initialDownloadCount int, autoDownload b
 	setting.GenerateNFOFile = generateNFOFile
 	setting.DontDownloadDeletedFromDisk = dontDownloadDeletedFromDisk
 	setting.BaseUrl = baseUrl
+	setting.MaxDownloadConcurrency = maxDownloadConcurrency
+	setting.UserAgent = userAgent
 
 	return db.UpdateSettings(setting)
 }

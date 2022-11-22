@@ -651,7 +651,10 @@ func UpdateSetting(c *gin.Context) {
             model.DownloadEpisodeImages, 
             model.GenerateNFOFile, 
             model.DontDownloadDeletedFromDisk, 
-            model.BaseUrl)
+			model.BaseUrl,
+			model.MaxDownloadConcurrency, 
+			model.UserAgent,
+		)
 		if err == nil {
 			c.JSON(200, gin.H{"message": "Success"})
 
