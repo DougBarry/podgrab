@@ -4,9 +4,8 @@ go 1.15
 
 require (
 	github.com/TheHippo/podcastindex v1.0.0
-	github.com/antchfx/xmlquery v1.3.3
-	github.com/chris-ramon/douceur v0.2.0 // indirect
-	github.com/dgrijalva/jwt-go v3.2.0+incompatible
+	github.com/alimoeeny/id3-go v1.1.6
+	github.com/antchfx/xmlquery v1.3.12
 	github.com/gin-contrib/location v0.0.2
 	github.com/gin-gonic/gin v1.7.2
 	github.com/gobeam/stringy v0.0.0-20200717095810-8a3637503f62
