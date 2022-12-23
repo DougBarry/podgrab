@@ -200,6 +200,22 @@ func DownloadAllEpisodesByPodcastId(c *gin.Context) {
 	}
 }
 
+func RefreshEpisodes(c *gin.Context) {
+	go service.RefreshEpisodes()
+	c.JSON(200, gin.H{})
+}
+
+func RefreshEpisodesByPodcastId(c *gin.Context) {
+	var searchByIdQuery SearchByIdQuery
+
+	if c.ShouldBindUri(&searchByIdQuery) == nil {
+		go service.RefreshPodcastByPodcastId(searchByIdQuery.Id)
+		c.JSON(200, gin.H{})
+	} else {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request"})
+	}
+}
+
 func GetAllPodcastItems(c *gin.Context) {
 	var filter model.EpisodesFilter
 	err := c.ShouldBindQuery(&filter)
@@ -288,7 +304,7 @@ func GetPodcastItemFileById(c *gin.Context) {
 			if _, err = os.Stat(podcast.DownloadPath); !os.IsNotExist(err) {
 				c.Header("Content-Description", "File Transfer")
 				c.Header("Content-Transfer-Encoding", "binary")
-				c.Header("Content-Disposition", "attachment; filename="+path.Base(podcast.DownloadPath))
+				c.Header("Content-Disposition", "attachment; filename="+searchByIdQuery.Id+path.Ext(podcast.DownloadPath))
 				c.Header("Content-Type", GetFileContentType(podcast.DownloadPath))
 				c.File(podcast.DownloadPath)
 			} else {
@@ -626,10 +642,18 @@ func UpdateSetting(c *gin.Context) {
 
 	if err == nil {
 
-		err = service.UpdateSettings(model.DownloadOnAdd, model.InitialDownloadCount,
-			model.AutoDownload, model.AppendDateToFileName, model.AppendEpisodeNumberToFileName,
-			model.DarkMode, model.DownloadEpisodeImages, model.GenerateNFOFile, model.DontDownloadDeletedFromDisk, model.BaseUrl,
-			model.MaxDownloadConcurrency, model.UserAgent,
+		err = service.UpdateSettings(
+			model.DownloadOnAdd,
+			model.InitialDownloadCount,
+			model.AutoDownload,
+			model.FileNameFormat,
+			model.DarkMode,
+			model.DownloadEpisodeImages,
+			model.GenerateNFOFile,
+			model.DontDownloadDeletedFromDisk,
+			model.BaseUrl,
+			model.MaxDownloadConcurrency,
+			model.UserAgent,
 		)
 		if err == nil {
 			c.JSON(200, gin.H{"message": "Success"})

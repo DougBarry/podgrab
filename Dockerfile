@@ -1,6 +1,7 @@
-ARG GO_VERSION=1.15.2
+#ARG GO_VERSION=1.15.2
 
-FROM golang:${GO_VERSION}-alpine AS builder
+#FROM golang:${GO_VERSION}-alpine AS builder
+FROM golang:alpine AS builder
 
 RUN apk update && apk add alpine-sdk git && rm -rf /var/cache/apk/*
 
@@ -23,7 +24,9 @@ ENV DATA=/assets
 ENV UID=998
 ENV PID=100
 ENV GIN_MODE=release
+
 VOLUME ["/config", "/assets"]
+
 RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
 RUN mkdir -p /config; \
     mkdir -p /assets; \

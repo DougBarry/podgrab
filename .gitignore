@@ -18,3 +18,9 @@ assets/*
 keys/*
 backups/*
 nodemon.json
+
+# build artefacts
+dist/*
+
+# Garbage files
+.DS_STORE

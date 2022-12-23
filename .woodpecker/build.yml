@@ -1,0 +1,11 @@
+pipeline:
+  publish:
+    image: woodpeckerci/plugin-docker-buildx
+    group: docker
+    settings:
+      dry_run: false
+      dockerfile: Dockerfile
+      repo: ${REGISTRY_HOST}/${CI_REPO_OWNER}/${CI_REPO_NAME}
+      custom_dns: ${PRIVATE_DNS}
+      platforms: linux/amd64
+      tag: [ development ]

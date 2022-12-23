@@ -22,7 +22,7 @@ import (
 	stringy "github.com/gobeam/stringy"
 )
 
-func Download(link string, episodeTitle string, podcastName string, prefix string) (string, error) {
+func Download(link string, episodeTitle string, podcastName string, episodePathName string) (string, error) {
 	if link == "" {
 		return "", errors.New("Download path empty")
 	}
@@ -39,12 +39,13 @@ func Download(link string, episodeTitle string, podcastName string, prefix strin
 		return "", err
 	}
 
-	fileName := getFileName(link, episodeTitle, ".mp3")
-	if prefix != "" {
-		fileName = fmt.Sprintf("%s-%s", prefix, fileName)
-	}
-	folder := createDataFolderIfNotExists(podcastName)
-	finalPath := path.Join(folder, fileName)
+	fileExtension := path.Ext(getFileName(link, episodeTitle, ".mp3"))
+	finalPath := path.Join(
+		os.Getenv("DATA"),
+		cleanFileName(podcastName),
+		fmt.Sprintf("%s%s", episodePathName, fileExtension))
+	dir, _ := path.Split(finalPath)
+	createPreSanitizedPath(dir)
 
 	if _, err := os.Stat(finalPath); !os.IsNotExist(err) {
 		changeOwnership(finalPath)
@@ -358,10 +359,7 @@ func getRequest(url string) (*http.Request, error) {
 	return req, nil
 }
 
-func createFolder(folder string, parent string) string {
-	folder = cleanFileName(folder)
-	//str := stringy.New(folder)
-	folderPath := path.Join(parent, folder)
+func createPreSanitizedPath(folderPath string) string {
 	if _, err := os.Stat(folderPath); os.IsNotExist(err) {
 		os.MkdirAll(folderPath, 0777)
 		changeOwnership(folderPath)
@@ -369,13 +367,20 @@ func createFolder(folder string, parent string) string {
 	return folderPath
 }
 
+func createFolder(folder string, parent string) string {
+	folder = cleanFileName(folder)
+	//str := stringy.New(folder)
+	folderPath := path.Join(parent, folder)
+	return createPreSanitizedPath(folderPath)
+}
+
 func createDataFolderIfNotExists(folder string) string {
 	dataPath := os.Getenv("DATA")
 	return createFolder(folder, dataPath)
 }
 func createConfigFolderIfNotExists(folder string) string {
-	dataPath := os.Getenv("CONFIG")
-	return createFolder(folder, dataPath)
+	configPath := os.Getenv("CONFIG")
+	return createFolder(folder, configPath)
 }
 
 func deletePodcastFolder(folder string) error {
@@ -395,7 +400,6 @@ func getFileName(link string, title string, defaultExtension string) string {
 	//str := stringy.New(title)
 	str := stringy.New(cleanFileName(title))
 	return str.KebabCase().Get() + ext
-
 }
 
 func cleanFileName(original string) string {
