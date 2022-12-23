@@ -304,7 +304,7 @@ func GetPodcastItemFileById(c *gin.Context) {
 			if _, err = os.Stat(podcast.DownloadPath); !os.IsNotExist(err) {
 				c.Header("Content-Description", "File Transfer")
 				c.Header("Content-Transfer-Encoding", "binary")
-				c.Header("Content-Disposition", "attachment; filename="+path.Base(podcast.DownloadPath))
+				c.Header("Content-Disposition", "attachment; filename="+searchByIdQuery.Id+path.Ext(podcast.DownloadPath))
 				c.Header("Content-Type", GetFileContentType(podcast.DownloadPath))
 				c.File(podcast.DownloadPath)
 			} else {
