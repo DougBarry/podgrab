@@ -206,7 +206,7 @@ func UpdatePodcastItemFileSize(podcastItemId string, size int64) error {
 
 func GetAllPodcastItemsWithoutImage() (*[]PodcastItem, error) {
 	var podcastItems []PodcastItem
-	result := DB.Preload(clause.Associations).Where("local_image is ?", nil).Where("image != ?", "").Where("download_status=?", Downloaded).Order("created_at desc").Find(&podcastItems)
+	result := DB.Preload(clause.Associations).Where("local_image = ?", "").Where("image != ?", "").Where("download_status=?", Downloaded).Order("created_at desc").Find(&podcastItems)
 	//fmt.Println("To be downloaded : " + string(len(podcastItems)))
 	return &podcastItems, result.Error
 }
@@ -372,8 +372,7 @@ func UnlockMissedJobs() {
 		if (job.Date == time.Time{}) {
 			continue
 		}
-		var duration time.Duration
-		duration = time.Duration(job.Duration)
+		var duration time.Duration = time.Duration(job.Duration)
 		d := job.Date.Add(time.Minute * duration)
 		if d.Before(time.Now()) {
 			fmt.Println(job.Name + " is unlocked")

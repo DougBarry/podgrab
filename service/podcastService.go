@@ -19,6 +19,7 @@ import (
 	"github.com/akhilrex/podgrab/internal/sanitize"
 	"github.com/antchfx/xmlquery"
 	strip "github.com/grokify/html-strip-tags-go"
+	id3 "github.com/mikkyang/id3-go"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 )
@@ -37,7 +38,7 @@ func ParseOpml(content string) (model.OpmlModel, error) {
 	return response, err
 }
 
-//FetchURL is
+// FetchURL is
 func FetchURL(url string) (model.PodcastData, []byte, error) {
 	body, err := makeQuery(url)
 	if err != nil {
@@ -584,6 +585,7 @@ func DownloadMissingEpisodes() error {
 			podcastFileName := FormatFileName(&item, setting.FileNameFormat)
 			url, _ := Download(item.FileURL, item.Title, item.Podcast.Title, podcastFileName)
 			SetPodcastItemAsDownloaded(item.ID, url)
+			go SetId3Tags(url, &item)
 		}(item, *setting)
 
 		if index%setting.MaxDownloadConcurrency == 0 {
@@ -657,6 +659,7 @@ func DownloadSingleEpisode(podcastItemId string) error {
 		return err
 	}
 	err = SetPodcastItemAsDownloaded(podcastItem.ID, url)
+	go SetId3Tags(url, &podcastItem)
 
 	if setting.DownloadEpisodeImages {
 		downloadImageLocally(podcastItem.ID)
@@ -784,6 +787,11 @@ func makeQuery(url string) ([]byte, error) {
 		return nil, err
 	}
 
+	setting := db.GetOrCreateSetting()
+	if len(setting.UserAgent) > 0 {
+		req.Header.Add("User-Agent", setting.UserAgent)
+	}
+
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return nil, err
@@ -891,4 +899,37 @@ func TogglePodcastPause(id string, isPaused bool) error {
 	}
 
 	return db.TogglePodcastPauseStatus(id, isPaused)
+}
+
+func SetId3Tags(path string, item *db.PodcastItem) {
+	file, err := id3.Open(path)
+	if err != nil {
+		fmt.Println(err.Error())
+		return
+	}
+
+	// override
+	file.SetTitle(item.Title)
+	file.SetArtist(item.Podcast.Author)
+	file.SetAlbum(item.Podcast.Title)
+	file.SetGenre("Podcast")
+	file.SetYear(strconv.Itoa(item.PubDate.Year()))
+
+	// TODO ALBUM ARTIST, COVER
+
+	// if file.Title() == "" {
+	// 	file.SetTitle(item.Title)
+	// }
+	// if file.Artist() == "" {
+	// 	file.SetArtist(item.Podcast.Title)
+	// }
+	// if file.Album() == "" {
+	// 	file.SetAlbum(item.Podcast.Title)
+	// }
+	// if len(file.Comments()) == 0 {
+	// 	file.SetComment(item.Summary)
+	// }
+	// file.SetGenre("Podcast")
+	// file.SetYear(strconv.Itoa(item.PubDate.Year()))
+	defer file.Close()
 }
