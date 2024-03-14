@@ -19,7 +19,7 @@ import (
 	"github.com/akhilrex/podgrab/internal/sanitize"
 	"github.com/antchfx/xmlquery"
 	strip "github.com/grokify/html-strip-tags-go"
-	id3 "github.com/mikkyang/id3-go"
+	id3 "github.com/arkhipovkm/id3-go"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 )
